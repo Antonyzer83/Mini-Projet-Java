@@ -30,7 +30,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Afficher le menu general de l'application
      */
-    @Override
     public void afficherMenu() {
         JButton firstButton = new JButton("Ajouter une réservation");
         firstButton.addActionListener(new ButtonHandler());
@@ -56,7 +55,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Afficher la totalite des reservations
      */
-    @Override
     public void afficherReservations() {
 
     }
@@ -64,7 +62,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Afficher une reservation specifique
      */
-    @Override
     public void afficherReservation() {
 
     }
@@ -72,14 +69,12 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Afficher la totalite des chambre dispos pour une periode donnee
      */
-    @Override
     public void afficherChambresDispos() {
     }
 
     /**
      * Afficher le recapitulatif pour l'ajout d'une reservation
      */
-    @Override
     public void afficherRecapitulatif() {
 
     }
@@ -87,7 +82,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Afficher succes d'une operation
      */
-    @Override
     public void afficherSucces() {
 
     }
@@ -95,7 +89,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Demander les dates MAJ d'une reservation
      */
-    @Override
     public void demanderDates() {
         // Update Frame
         getContentPane().removeAll();
@@ -138,7 +131,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Demander le client a choisir pour la reservation
      */
-    @Override
     public void demanderClient() {
 
     }
@@ -146,7 +138,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Demander la validation de l'annulation
      */
-    @Override
     public void checkAnnulerReservation() {
 
     }
@@ -154,7 +145,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Annuler une reservation
      */
-    @Override
     public void annulerReservation() {
 
     }
@@ -162,7 +152,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Recuperer les dates entrees
      */
-    @Override
     public void recupererDates() {
 
     }
@@ -170,7 +159,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Recuperer les chambres selectionnees pour une reservation
      */
-    @Override
     public void recupererChambresSelectionnees() {
 
     }
@@ -178,7 +166,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Valider une reservation
      */
-    @Override
     public void validerReservation() {
 
     }
@@ -186,7 +173,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Recuperer le client selectionne
      */
-    @Override
     public void recupererClient() {
 
     }
@@ -194,7 +180,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Afficher la totalite des clients
      */
-    @Override
     public void afficherClients() {
 
     }
@@ -202,7 +187,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Afficher le formulaire pour l'ajout d'un client
      */
-    @Override
     public void afficherFormulaireClient() {
 
     }
@@ -210,7 +194,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Recuperer le formulaire pour l'ajout d'un client
      */
-    @Override
     public void recupererFormulaireClient() {
 
     }
@@ -218,7 +201,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Afficher le formulaire pour la MAJ d'un client
      */
-    @Override
     public void afficherFormulaireClientMAJ() {
 
     }
@@ -226,7 +208,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Recuperer le client a mettre a jour
      */
-    @Override
     public void recupererClientMAJ() {
 
     }
@@ -234,7 +215,6 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Afficher la totalite des chambres
      */
-    @Override
     public void afficherChambres() {
 
     }
