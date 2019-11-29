@@ -1,6 +1,17 @@
-package PApplicationGestionHotel;
+package PApplicationGestionHotel.PHotel;
 
-public class Application implements IApplication {
+import javax.swing.*;
+
+public class HotelView extends JFrame implements IHotelView {
+
+    public HotelView() {
+        setSize(400, 400);
+        setTitle("Gestion Hotel");
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
 
     /**
      * Afficher le menu general de l'application

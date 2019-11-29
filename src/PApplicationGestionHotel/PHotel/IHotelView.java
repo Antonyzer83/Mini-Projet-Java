@@ -1,6 +1,6 @@
-package PApplicationGestionHotel;
+package PApplicationGestionHotel.PHotel;
 
-public interface IApplication {
+public interface IHotelView {
 
     /**
      * Afficher le menu general de l'application
