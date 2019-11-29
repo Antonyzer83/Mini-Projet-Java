@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -75,7 +74,6 @@ public class HotelView extends JFrame implements IHotelView {
      */
     @Override
     public void afficherChambresDispos() {
-
     }
 
     /**
