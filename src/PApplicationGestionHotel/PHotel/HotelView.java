@@ -1,15 +1,22 @@
 package PApplicationGestionHotel.PHotel;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class HotelView extends JFrame implements IHotelView {
 
     public HotelView() {
+        setLayout(new GridLayout(2, 2));
         setSize(400, 400);
         setTitle("Gestion Hotel");
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        this.afficherMenu();
+
         setVisible(true);
     }
 
@@ -18,7 +25,19 @@ public class HotelView extends JFrame implements IHotelView {
      */
     @Override
     public void afficherMenu() {
+        JButton firstButton = new JButton("Ajouter une réservation");
+        firstButton.addActionListener(new ButtonHandler());
+        JButton secondButton = new JButton("Afficher les réservations");
+        secondButton.addActionListener(new ButtonHandler());
+        JButton thirdButton = new JButton("Afficher les clients");
+        thirdButton.addActionListener(new ButtonHandler());
+        JButton fourthButton = new JButton("Afficher les chambres");
+        fourthButton.addActionListener(new ButtonHandler());
 
+        add(firstButton);
+        add(secondButton);
+        add(thirdButton);
+        add(fourthButton);
     }
 
     /**
@@ -171,5 +190,26 @@ public class HotelView extends JFrame implements IHotelView {
     @Override
     public void afficherChambres() {
 
+    }
+
+    class ButtonHandler implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String buttonText = ((JButton)  (e.getSource())).getText();
+            System.out.println(buttonText);
+
+            switch (buttonText) {
+                case "Ajouter une réservation":
+                    demanderDates();
+                    break;
+                case "Afficher les réservations":
+                    break;
+                case "Afficher les clients":
+                    break;
+                case "Afficher les chambres":
+                    break;
+            }
+        }
     }
 }
