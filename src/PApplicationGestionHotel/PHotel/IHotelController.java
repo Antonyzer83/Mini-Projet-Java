@@ -1,5 +1,6 @@
 package PApplicationGestionHotel.PHotel;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public interface IHotelController {
@@ -22,7 +23,7 @@ public interface IHotelController {
     /**
      * Recuperer les chambres disponibles pour une periode
      */
-    public void recupererChambresDipos(Object firstDate, Object secondDate);
+    public ArrayList<Chambre> recupererChambresDipos(Object firstDate, Object secondDate);
 
     /**
      * Reserve des chambres pour une reservation

@@ -206,7 +206,7 @@ public class HotelModel implements IHotelModel {
      */
     public ResultSet recupererChambresDispos(String date_debut, String date_fin) {
         try {
-            PreparedStatement stmt = this.connection.prepareStatement("SELECT chambre.id_chambre, chambre.id_categorie, chambre.id_type, chambre.id_saison " +
+            PreparedStatement stmt = this.connection.prepareStatement("SELECT chambre.id_chambre, c.nom, c.pourcentage, t.nom, t.prix, s.nom, s.pourcentage " +
                     "FROM reservation_chambre, chambre " +
                     "JOIN type t on chambre.id_type = t.id_type " +
                     "JOIN categorie c on chambre.id_categorie = c.id_categorie " +
