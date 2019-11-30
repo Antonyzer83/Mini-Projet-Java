@@ -12,7 +12,7 @@ public interface IHotelModel {
     /**
      * Recuperer la totalite des chambres
      */
-    public void recupererChambres();
+    public ResultSet recupererChambres();
 
     /**
      * Ajouter une nouvelle reservation
@@ -22,17 +22,17 @@ public interface IHotelModel {
     /**
      * Supprimer une reservation
      */
-    public void supprimerReservation();
+    public boolean supprimerReservation(int id_reservation);
 
     /**
      * Recuperer une reservation specifique
      */
-    public void recupererReservation();
+    public ResultSet recupererReservation(int id_reservation);
 
     /**
      * Recuperer les dates d'une chambres
      */
-    public void recupererDateChambre();
+    public ResultSet recupererDateChambre(int id_reservation, int id_chambre);
 
     /**
      * Mettre a jour la date d'une chambre
@@ -42,7 +42,7 @@ public interface IHotelModel {
     /**
      * Recuperer un client specifique
      */
-    public void recupererClient();
+    public ResultSet recupererClient(int id_client);
 
     /**
      * Mettre a jour un client
@@ -52,10 +52,10 @@ public interface IHotelModel {
     /**
      * Ajouter un nouveau client
      */
-    public void ajouterClient();
+    public boolean ajouterClient(String nom, String prenom, int cin, String telephone);
 
     /**
      * Recuperer la totalite des clients
      */
-    public void recupererClients();
+    public ResultSet recupererClients();
 }
