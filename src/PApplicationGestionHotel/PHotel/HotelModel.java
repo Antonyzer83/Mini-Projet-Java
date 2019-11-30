@@ -199,4 +199,28 @@ public class HotelModel implements IHotelModel {
             return null;
         }
     }
+
+    /**
+     * Recuperer les chambres disponibles pendant une periode
+     * @return
+     */
+    public ResultSet recupererChambresDispos(String date_debut, String date_fin) {
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement("SELECT chambre.id_chambre, chambre.id_categorie, chambre.id_type, chambre.id_saison " +
+                    "FROM reservation_chambre, chambre " +
+                    "JOIN type t on chambre.id_type = t.id_type " +
+                    "JOIN categorie c on chambre.id_categorie = c.id_categorie " +
+                    "JOIN saison s on chambre.id_saison = s.id_saison " +
+                    "WHERE (? NOT BETWEEN date_debut AND date_fin) AND (? NOT BETWEEN date_debut AND date_fin) " +
+                    "AND chambre.id_chambre = reservation_chambre.id_chambre " +
+                    "OR chambre.id_chambre NOT IN (SELECT id_chambre FROM reservation_chambre);");
+            stmt.setString(1, date_debut);
+            stmt.setString(2, date_fin);
+            ResultSet res = stmt.executeQuery();
+            return res;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
 }

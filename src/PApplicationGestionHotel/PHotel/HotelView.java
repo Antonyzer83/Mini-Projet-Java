@@ -74,7 +74,7 @@ public class HotelView extends JFrame implements IHotelView {
      * Afficher la totalite des chambre dispos pour une periode donnee
      */
     public void afficherChambresDispos() {
-
+        hotelController.recupererChambresDipos(this.firstDate.getValue(), this.secondDate.getValue());
     }
 
     /**
@@ -247,7 +247,6 @@ public class HotelView extends JFrame implements IHotelView {
                 case "Rechercher":
                     System.out.println(new SimpleDateFormat("dd/MM/yyyy").format(firstDate.getValue()));
                     System.out.println(new SimpleDateFormat("dd/MM/yyyy").format(secondDate.getValue()));
-                    System.out.println(firstDate.getValue());
                     afficherChambresDispos();
             }
         }

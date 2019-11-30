@@ -58,4 +58,10 @@ public interface IHotelModel {
      * Recuperer la totalite des clients
      */
     public ResultSet recupererClients();
+
+    /**
+     * Recuperer les chambres disponibles pendant une periode
+     * @return
+     */
+    public ResultSet recupererChambresDispos(String date_debut, String date_fin);
 }

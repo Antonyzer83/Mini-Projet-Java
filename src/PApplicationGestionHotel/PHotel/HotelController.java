@@ -1,5 +1,9 @@
 package PApplicationGestionHotel.PHotel;
 
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class HotelController implements IHotelController {
 
     private HotelModel hotelModel;
@@ -30,8 +34,23 @@ public class HotelController implements IHotelController {
     /**
      * Recuperer les chambres disponibles pour une periode
      */
-    public void recupererChambresDipos() {
-
+    public void recupererChambresDipos(Object firstDate, Object secondDate) {
+        String date_d = new SimpleDateFormat("dd-MM-yyyy").format(firstDate);
+        String date_f = new SimpleDateFormat("dd-MM-yyyy").format(secondDate);
+        System.out.println(date_d + " " + date_f);
+        try {
+            Date date_debut = new SimpleDateFormat("dd-MM-yyyy").parse(date_d);
+            Date date_fin = new SimpleDateFormat("dd-MM-yyyy").parse(date_f);
+            if (date_debut.before(date_fin)) {
+                System.out.println("yes");
+                ResultSet res = hotelModel.recupererChambresDispos(date_d, date_f);
+                while (res.next()) {
+                    System.out.println("test " + res.getInt(1));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     /**
