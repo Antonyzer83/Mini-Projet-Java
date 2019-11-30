@@ -4,17 +4,31 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class HotelView extends JFrame implements IHotelView {
 
+    /**
+     * HotelController
+     */
     private HotelController hotelController;
 
+    /**
+     * Premiere date pour la reservation
+     */
     private JSpinner firstDate;
 
+    /**
+     * Seconde date pour la reservation
+     */
     private JSpinner secondDate;
+
+    /**
+     * Tableau des checkboxs pour la selection des chambres;
+     */
+    private JCheckBox[] box;
 
     public HotelView(HotelController hotelController) {
         this.hotelController = hotelController;
@@ -35,6 +49,7 @@ public class HotelView extends JFrame implements IHotelView {
      * Afficher le menu general de l'application
      */
     public void afficherMenu() {
+        // Création de boutons pour chaque option
         JButton firstButton = new JButton("Ajouter une réservation");
         firstButton.addActionListener(new ButtonHandler());
         JButton secondButton = new JButton("Afficher les réservations");
@@ -44,6 +59,7 @@ public class HotelView extends JFrame implements IHotelView {
         JButton fourthButton = new JButton("Afficher les chambres");
         fourthButton.addActionListener(new ButtonHandler());
 
+        // Ajout des boutons a la fenetre
         add(firstButton);
         add(secondButton);
         add(thirdButton);
@@ -74,7 +90,29 @@ public class HotelView extends JFrame implements IHotelView {
      * Afficher la totalite des chambre dispos pour une periode donnee
      */
     public void afficherChambresDispos() {
-        hotelController.recupererChambresDipos(this.firstDate.getValue(), this.secondDate.getValue());
+        // Recuperation des chambres disponibles pour une periode
+        ArrayList<Chambre> chambres = hotelController.recupererChambresDipos(this.firstDate.getValue(), this.secondDate.getValue());
+        if (chambres != null) {
+            getContentPane().removeAll();
+            setSize(400, 450);
+
+            this.box = new JCheckBox[chambres.size()];
+            int count = 0;
+            for (Chambre chambre : chambres) {
+                this.box[count] = new JCheckBox(chambre.getName());
+                add(this.box[count]);
+                count++;
+            }
+
+            JButton button = new JButton("Valider les chambres");
+            button.addActionListener(new ButtonHandler());
+            add(button);
+
+            validate();
+            repaint();
+        } else {
+
+        }
     }
 
     /**
@@ -95,12 +133,12 @@ public class HotelView extends JFrame implements IHotelView {
      * Demander les dates MAJ d'une reservation
      */
     public void demanderDates() {
-        // Update Frame
+        // MAJ fenetre
         getContentPane().removeAll();
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setSize(200, 200);
 
-        // Create Date format
+        // Creation du format pour la date
         Calendar calendar = Calendar.getInstance();
         Date initDate = calendar.getTime();
         calendar.add(Calendar.DAY_OF_WEEK, -1);
@@ -110,7 +148,7 @@ public class HotelView extends JFrame implements IHotelView {
         SpinnerModel model = new SpinnerDateModel(initDate, earlyDate, lastestDate, Calendar.YEAR);
         SpinnerModel model2 = new SpinnerDateModel(initDate, earlyDate, lastestDate, Calendar.YEAR);
 
-        // Create elements
+        // Creation elements de la page
         JLabel firstLabel = new JLabel("Date d'arrivée : ");
         JLabel secondLabel = new JLabel("Date de départ : ");
         this.firstDate = new JSpinner(model);
@@ -118,11 +156,11 @@ public class HotelView extends JFrame implements IHotelView {
         this.firstDate.setEditor(new JSpinner.DateEditor(this.firstDate, "dd/MM/yyyy"));
         this.secondDate.setEditor(new JSpinner.DateEditor(this.secondDate, "dd/MM/yyyy"));
 
-        // Create button and event
+        // Creation du bouton et de son evenement
         JButton button = new JButton("Rechercher");
         button.addActionListener(new ButtonHandler());
 
-        // Add elements to frame
+        // Ajout des elements a la fenetre
         add(firstLabel);
         add(this.firstDate);
         add(secondLabel);
@@ -137,7 +175,11 @@ public class HotelView extends JFrame implements IHotelView {
      * Demander le client a choisir pour la reservation
      */
     public void demanderClient() {
-
+        for (JCheckBox box : this.box) {
+            if (box.isSelected()) {
+                System.out.println(box.getText());
+            }
+        }
     }
 
     /**
@@ -245,9 +287,11 @@ public class HotelView extends JFrame implements IHotelView {
                     afficherChambres();
                     break;
                 case "Rechercher":
-                    System.out.println(new SimpleDateFormat("dd/MM/yyyy").format(firstDate.getValue()));
-                    System.out.println(new SimpleDateFormat("dd/MM/yyyy").format(secondDate.getValue()));
                     afficherChambresDispos();
+                    break;
+                case "Valider les chambres":
+                    demanderClient();
+                    break;
             }
         }
     }

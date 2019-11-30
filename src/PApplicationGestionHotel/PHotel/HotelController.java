@@ -36,17 +36,21 @@ public class HotelController implements IHotelController {
      * Recuperer les chambres disponibles pour une periode
      */
     public ArrayList<Chambre> recupererChambresDipos(Object firstDate, Object secondDate) {
+        //Conversion des objets date en String
         String date_d = new SimpleDateFormat("dd-MM-yyyy").format(firstDate);
         String date_f = new SimpleDateFormat("dd-MM-yyyy").format(secondDate);
-        System.out.println(date_d + " " + date_f);
         try {
+            // Conversion des strings date en Date
             Date date_debut = new SimpleDateFormat("dd-MM-yyyy").parse(date_d);
             Date date_fin = new SimpleDateFormat("dd-MM-yyyy").parse(date_f);
+            // Vérification que la date finale est supérieure à la date initiale
             if (date_debut.before(date_fin)) {
+                // Récupération des chambres disponibles
                 ResultSet res = hotelModel.recupererChambresDispos(date_d, date_f);
                 ArrayList<Chambre> chambres = new ArrayList<>();
+                // Pour chaque chambre
                 while (res.next()) {
-                    double prix = res.getDouble(3) * res.getDouble(5) * res.getDouble(7);
+                    double prix = (double) Math.round(res.getDouble(3) * res.getDouble(5) * res.getDouble(7) * 10) / 10;
                     chambres.add(new Chambre(res.getInt(1), res.getString(6), res.getString(2), res.getString(4), prix));
                 }
                 return chambres;

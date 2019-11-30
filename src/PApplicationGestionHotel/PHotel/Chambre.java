@@ -29,4 +29,8 @@ public class Chambre {
                 "\nCategorie : " + this.categorie +
                 "\nPrix : " + this.prix;
     }
+
+    public String getName() {
+        return this.type + ", " + this.categorie + ", " + this.prix;
+    }
 }
