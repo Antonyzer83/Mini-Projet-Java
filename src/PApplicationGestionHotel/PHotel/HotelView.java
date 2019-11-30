@@ -10,11 +10,15 @@ import java.util.Date;
 
 public class HotelView extends JFrame implements IHotelView {
 
+    private HotelController hotelController;
+
     private JSpinner firstDate;
 
     private JSpinner secondDate;
 
-    public HotelView() {
+    public HotelView(HotelController hotelController) {
+        this.hotelController = hotelController;
+
         setLayout(new GridLayout(2, 2));
         setSize(400, 400);
         setTitle("Gestion Hotel");
@@ -70,6 +74,7 @@ public class HotelView extends JFrame implements IHotelView {
      * Afficher la totalite des chambre dispos pour une periode donnee
      */
     public void afficherChambresDispos() {
+
     }
 
     /**
@@ -242,6 +247,7 @@ public class HotelView extends JFrame implements IHotelView {
                 case "Rechercher":
                     System.out.println(new SimpleDateFormat("dd/MM/yyyy").format(firstDate.getValue()));
                     System.out.println(new SimpleDateFormat("dd/MM/yyyy").format(secondDate.getValue()));
+                    System.out.println(firstDate.getValue());
                     afficherChambresDispos();
             }
         }

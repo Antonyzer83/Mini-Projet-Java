@@ -2,7 +2,11 @@ package PApplicationGestionHotel.PHotel;
 
 public class HotelController implements IHotelController {
 
-    public HotelController() {}
+    private HotelModel hotelModel;
+
+    public HotelController(HotelModel hotelModel) {
+        this.hotelModel = hotelModel;
+    }
 
     /**
      * Recuperer la totalite des reservations
