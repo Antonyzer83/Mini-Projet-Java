@@ -1,11 +1,13 @@
 package PApplicationGestionHotel.PHotel;
 
+import java.sql.ResultSet;
+
 public interface IHotelModel {
 
     /**
      * Recuperer la totalite des reservations
      */
-    public void recupererReservations();
+    public ResultSet recupererReservations();
 
     /**
      * Recuperer la totalite des chambres
