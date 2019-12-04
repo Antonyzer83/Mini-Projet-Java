@@ -1,6 +1,8 @@
 package PApplicationGestionHotel.PHotel;
 
 import java.sql.*;
+import java.io.File;
+import org.ini4j.*;
 
 public class HotelModel implements IHotelModel {
 
@@ -12,11 +14,12 @@ public class HotelModel implements IHotelModel {
 
     private Connection connectBDD() {
         try {
+            Wini ini = new Wini(new File("src/PApplicationGestionHotel/PHotel/db.ini"));
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/hotel?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC",
-                    "root",
-                    "root"
+                    "jdbc:mysql://" + ini.get("database", "address") + ":" + ini.get("database", "port") + "/" + ini.get("database", "table") + "?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC",
+                    ini.get("database", "user"),
+                    ini.get("database", "password")
             );
             return con;
         } catch (Exception e) {

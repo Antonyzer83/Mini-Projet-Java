@@ -16,3 +16,7 @@ Installer Ini4j :
 
 Créer Base de données :
 - Lancer le script SQL create_database.sql dans votre SGBD.
+
+Mettre à jour le fichier db.ini :
+- Ouvrir le fichier db.ini.
+- Remplacer les valeurs par vos identifiants et vos paramètres.
