@@ -34,7 +34,7 @@ public class HotelModel implements IHotelModel {
     public ResultSet recupererReservations() {
         try {
             Statement stmt = this.connection.createStatement();
-            ResultSet res = stmt.executeQuery("select reservation.id_reservation, nb_nuits, date_reservation, nb_personne, pension, date_debut, date_fin, t.nom, c.nom " +
+            ResultSet res = stmt.executeQuery("select reservation.id_reservation, nb_nuits, date_reservation, nb_personne, date_debut, date_fin, t.nom, c.nom " +
                     "FROM reservation " +
                     "JOIN reservation_chambre rc on reservation.id_reservation = rc.id_reservation " +
                     "JOIN chambre ch on rc.id_chambre = ch.id_chambre " +
@@ -68,11 +68,41 @@ public class HotelModel implements IHotelModel {
     /**
      * Ajouter une nouvelle reservation
      */
-    public void ajouterReservation() {
+    public int ajouterReservation(int nb_nuits, Date date_reservation, int nb_personne, int id_client) {
         try {
-
+            PreparedStatement stmt = this.connection.prepareStatement("INSERT INTO reservation (nb_nuits, date_reservation, nb_personne, id_client) " +
+                    "VALUES(?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, nb_nuits);
+            stmt.setDate(2, date_reservation);
+            stmt.setInt(3, nb_personne);
+            stmt.setInt(4, id_client);
+            stmt.execute();
+            ResultSet res = stmt.getGeneratedKeys();
+            if (res.next()) {
+                return res.getInt(1);
+            }
+            return 0;
         } catch (Exception e) {
             System.out.println(e);
+            return 0;
+        }
+    }
+
+    /**
+     * Ajouter une reservation et une chambre
+     */
+    public boolean ajouterReservationChambre(int id_reservation, int id_chambre, Date date_debut, Date date_fin) {
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement("INSERT INTO reservation_chambre (id_reservation, id_chambre, date_debut, date_fin) " +
+                    "VALUES(?, ?, ?, ?);");
+            stmt.setInt(1, id_reservation);
+            stmt.setInt(2, id_chambre);
+            stmt.setDate(3, date_debut);
+            stmt.setDate(4, date_fin);
+            return stmt.execute();
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
         }
     }
 
@@ -97,7 +127,7 @@ public class HotelModel implements IHotelModel {
      */
     public ResultSet recupererReservation(int id_reservation) {
         try {
-            PreparedStatement stmt = this.connection.prepareStatement("SELECT reservation.id_reservation, nb_nuits, date_reservation, nb_personne, pension, date_debut, date_fin, t.nom, c.nom " +
+            PreparedStatement stmt = this.connection.prepareStatement("SELECT reservation.id_reservation, nb_nuits, date_reservation, nb_personne, date_debut, date_fin, t.nom, c.nom " +
                     "FROM reservation " +
                     "JOIN reservation_chambre rc on reservation.id_reservation = rc.id_reservation " +
                     "JOIN chambre ch on rc.id_chambre = ch.id_chambre " +
@@ -214,9 +244,10 @@ public class HotelModel implements IHotelModel {
                     "JOIN type t on chambre.id_type = t.id_type " +
                     "JOIN categorie c on chambre.id_categorie = c.id_categorie " +
                     "JOIN saison s on chambre.id_saison = s.id_saison " +
-                    "WHERE (? NOT BETWEEN date_debut AND date_fin) AND (? NOT BETWEEN date_debut AND date_fin) " +
+                    "WHERE (! ? BETWEEN date_debut AND date_fin) AND (! ? BETWEEN date_debut AND date_fin) " +
                     "AND chambre.id_chambre = reservation_chambre.id_chambre " +
-                    "OR chambre.id_chambre NOT IN (SELECT id_chambre FROM reservation_chambre);");
+                    "OR chambre.id_chambre NOT IN (SELECT id_chambre FROM reservation_chambre)" +
+                    "GROUP BY chambre.id_chambre;");
             stmt.setString(1, date_debut);
             stmt.setString(2, date_fin);
             ResultSet res = stmt.executeQuery();

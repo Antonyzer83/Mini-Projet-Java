@@ -1,5 +1,7 @@
 package PApplicationGestionHotel.PHotel;
 
+import javax.swing.*;
+
 public interface IHotelView {
 
     /**
@@ -75,12 +77,12 @@ public interface IHotelView {
     /**
      * Afficher la totalite des clients
      */
-    public void afficherClients();
+    public JPanel afficherClients(boolean mode);
 
     /**
      * Afficher le formulaire pour l'ajout d'un client
      */
-    public void afficherFormulaireClient();
+    public JPanel afficherFormulaireClient(boolean mode);
 
     /**
      * Recuperer le formulaire pour l'ajout d'un client

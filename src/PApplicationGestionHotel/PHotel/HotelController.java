@@ -3,9 +3,7 @@ package PApplicationGestionHotel.PHotel;
 import javax.swing.*;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.*;
 
 public class HotelController implements IHotelController {
 
@@ -35,7 +33,9 @@ public class HotelController implements IHotelController {
     /**
      * Recuperer la reservation en cours d'enregistrement
      */
-    public void recupererReservationEnCours() {}
+    public Reservation recupererReservationEnCours() {
+        return this.reservation;
+    }
 
     /**
      * Recuperer les chambres disponibles pour une periode
@@ -47,7 +47,9 @@ public class HotelController implements IHotelController {
         try {
             // Conversion des strings date en Date
             Date date_debut = new SimpleDateFormat("dd-MM-yyyy").parse(date_d);
+            this.reservation.date_debut = date_debut;
             Date date_fin = new SimpleDateFormat("dd-MM-yyyy").parse(date_f);
+            this.reservation.date_fin = date_fin;
             // Vérification que la date finale est supérieure à la date initiale
             if (date_debut.before(date_fin)) {
                 // Récupération des chambres disponibles
@@ -74,8 +76,7 @@ public class HotelController implements IHotelController {
         int count = 0;
         for (JCheckBox box : boxes) {
             if (box.isSelected()) {
-                ArrayList<String> chambre= new ArrayList(Arrays.asList(box.getText().split(", ")));
-                this.reservation.ajouterChambre(Integer.parseInt(chambre.get(0)));
+                this.reservation.ajouterChambre(box.getText());
                 count++;
             }
         }
@@ -89,15 +90,32 @@ public class HotelController implements IHotelController {
     /**
      * Reserver un client pour une reservation
      */
-    public void reserverClient() {
-
+    public boolean reserverClient(ButtonGroup bg) {
+        String client = bg.getSelection().getActionCommand();
+        if (client != null) {
+            this.reservation.ajouterClient(client);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
      * Ajouter une nouvelle reservation complete
      */
     public void ajouterReservation() {
-
+        int client_id = Integer.parseInt(this.reservation.client.split(", ")[0]);
+        int reservation_id = this.hotelModel.ajouterReservation(
+                this.reservation.calculNbJour(),
+                new java.sql.Date(Calendar.getInstance().getTime().getTime()),
+                5,
+                client_id
+        );
+        for (String chambre : this.reservation.chambres) {
+            List<String> chambreSplit = Arrays.asList(chambre.split(", "));
+            int chambre_id = Integer.parseInt(chambreSplit.get(0));
+            this.hotelModel.ajouterReservationChambre(reservation_id, chambre_id, new java.sql.Date(this.reservation.date_debut.getTime()), new java.sql.Date(this.reservation.date_fin.getTime()));
+        }
     }
 
     /**
@@ -131,8 +149,18 @@ public class HotelController implements IHotelController {
     /**
      * Recuperer la totalite des clients
      */
-    public void recupererClients() {
-
+    public ArrayList<Client> recupererClients() {
+        try {
+            ResultSet res = this.hotelModel.recupererClients();
+            ArrayList<Client> clients = new ArrayList<>();
+            while (res.next()) {
+                clients.add(new Client(res.getInt(1), res.getString(2), res.getString(3), res.getInt(4), res.getString(5), res.getString(6)));
+            }
+            return clients;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
     }
 
     /**
@@ -153,7 +181,6 @@ public class HotelController implements IHotelController {
      * Recuperer un client specifique
      */
     public void recupererClient() {
-
     }
 
     /**

@@ -27,6 +27,11 @@ public class HotelView extends JFrame implements IHotelView {
     private JSpinner secondDate;
 
     /**
+     * Groupe de boutons
+     */
+    private ButtonGroup bg;
+
+    /**
      * Tableau des checkboxs pour la selection des chambres;
      */
     private JCheckBox[] box;
@@ -111,8 +116,6 @@ public class HotelView extends JFrame implements IHotelView {
 
             validate();
             repaint();
-        } else {
-
         }
     }
 
@@ -120,7 +123,30 @@ public class HotelView extends JFrame implements IHotelView {
      * Afficher le recapitulatif pour l'ajout d'une reservation
      */
     public void afficherRecapitulatif() {
+        getContentPane().removeAll();
 
+        Reservation reservation = this.hotelController.recupererReservationEnCours();
+        JLabel date_debut = new JLabel("Date d'arrivée : " + reservation.date_debut);
+        JLabel date_fin = new JLabel("Date de départ : " + reservation.date_fin);
+        JLabel label1 = new JLabel("Client : " + reservation.client);
+        JLabel chambres = new JLabel("Chambres : ");
+
+        add(date_debut);
+        add(date_fin);
+        add(label1);
+        add(chambres);
+        for (String chambre : reservation.chambres) {
+            JLabel label = new JLabel(chambre);
+            add(label);
+        }
+
+        JButton button = new JButton("Valider Réservation");
+        button.addActionListener(new ButtonHandler());
+
+        add(button);
+
+        validate();
+        repaint();
     }
 
     /**
@@ -177,7 +203,15 @@ public class HotelView extends JFrame implements IHotelView {
      */
     public void demanderClient() {
         if (this.hotelController.reserverChambres(this.box)) {
-            System.out.println("yes");
+            getContentPane().removeAll();
+            setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+            setSize(400, 400);
+
+            add(this.afficherClients(true));
+            add(this.afficherFormulaireClient(true));
+
+            validate();
+            repaint();
         }
     }
 
@@ -213,28 +247,58 @@ public class HotelView extends JFrame implements IHotelView {
      * Valider une reservation
      */
     public void validerReservation() {
-
+        this.hotelController.ajouterReservation();
     }
 
     /**
      * Recuperer le client selectionne
      */
     public void recupererClient() {
-
+        if (this.hotelController.reserverClient(this.bg)) {
+            this.afficherRecapitulatif();
+        }
+        System.out.println(this.bg.getSelection().getActionCommand());
     }
 
     /**
      * Afficher la totalite des clients
      */
-    public void afficherClients() {
-
+    public JPanel afficherClients(boolean mode) {
+        ArrayList<Client> clients = this.hotelController.recupererClients();
+        if (clients != null) {
+            JPanel panel = new JPanel();
+            this.bg = new ButtonGroup();
+            for (Client client : clients) {
+                if (mode) {
+                    JRadioButton jRadioButton = new JRadioButton(client.getName());
+                    jRadioButton.setActionCommand(client.getName());
+                    bg.add(jRadioButton);
+                    panel.add(jRadioButton);
+                } else {
+                    JLabel label = new JLabel(client.getName());
+                    add(label);
+                }
+            }
+            if (mode) {
+                JButton button = new JButton("Choisir Client");
+                button.addActionListener(new ButtonHandler());
+                panel.add(button);
+            }
+            return panel;
+        } else {
+            return null;
+        }
     }
 
     /**
      * Afficher le formulaire pour l'ajout d'un client
      */
-    public void afficherFormulaireClient() {
-
+    public JPanel afficherFormulaireClient(boolean mode) {
+        if (mode) {
+            return new JPanel();
+        } else {
+            return new JPanel();
+        }
     }
 
     /**
@@ -280,7 +344,7 @@ public class HotelView extends JFrame implements IHotelView {
                     afficherReservations();
                     break;
                 case "Afficher les clients":
-                    afficherClients();
+                    afficherClients(false);
                     break;
                 case "Afficher les chambres":
                     afficherChambres();
@@ -290,6 +354,12 @@ public class HotelView extends JFrame implements IHotelView {
                     break;
                 case "Valider les chambres":
                     demanderClient();
+                    break;
+                case "Choisir Client":
+                    recupererClient();
+                    break;
+                case "Valider Réservation":
+                    validerReservation();
                     break;
             }
         }

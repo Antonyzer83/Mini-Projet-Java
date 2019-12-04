@@ -19,7 +19,7 @@ public interface IHotelController {
     /**
      * Recuperer la reservation en cours d'enregistrement
      */
-    public void recupererReservationEnCours();
+    public Reservation recupererReservationEnCours();
 
     /**
      * Recuperer les chambres disponibles pour une periode
@@ -34,7 +34,7 @@ public interface IHotelController {
     /**
      * Reserver un client pour une reservation
      */
-    public void reserverClient();
+    public boolean reserverClient(ButtonGroup bg);
 
     /**
      * Ajouter une nouvelle reservation complete
@@ -64,7 +64,7 @@ public interface IHotelController {
     /**
      * Recuperer la totalite des clients
      */
-    public void recupererClients();
+    public ArrayList<Client> recupererClients();
 
     /**
      * Ajouter un nouveau client

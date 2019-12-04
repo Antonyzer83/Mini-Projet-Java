@@ -1,5 +1,6 @@
 package PApplicationGestionHotel.PHotel;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 
 public interface IHotelModel {
@@ -17,7 +18,12 @@ public interface IHotelModel {
     /**
      * Ajouter une nouvelle reservation
      */
-    public void ajouterReservation();
+    public int ajouterReservation(int nb_nuits, Date date_reservation, int nb_personne, int client_id);
+
+    /**
+     * Ajouter une reservation et une chambre
+     */
+    public boolean ajouterReservationChambre(int id_reservation, int id_chambre, Date date_debut, Date date_fin);
 
     /**
      * Supprimer une reservation

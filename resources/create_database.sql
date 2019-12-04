@@ -42,7 +42,8 @@ CREATE TABLE client(
     nom VARCHAR(20) NOT NULL,
     prenom VARCHAR(20) NOT NULL,
     cin INT NOT NULL,
-    telephone VARCHAR(10) NOT NULL
+    telephone VARCHAR(10) NOT NULL,
+    cb VARCHAR(16) NOT NULL
 );
 
 -- CREATION DE LA TABLE RESERVATION
@@ -51,7 +52,8 @@ CREATE TABLE reservation(
     nb_nuits INT NOT NULL,
     date_reservation DATE NOT NULL,
     nb_personne INT NOT NULL,
-    pension VARCHAR(20) NOT NULL
+    id_client INT NOT NULL,
+    FOREIGN KEY (id_client) REFERENCES client(id_client)
 );
 
 -- CREATION DE LA TABLE RESERVATION_CHAMBRE
@@ -103,8 +105,8 @@ INSERT INTO chambre VALUES(14, 1, 5, 3);
 INSERT INTO chambre VALUES(15, 1, 6, 5);
 
 -- INSERTION DE CLIENT
-INSERT INTO client VALUES(1, 'castaner', 'antony', 123, '0781208709');
+INSERT INTO client VALUES(1, 'castaner', 'antony', 123, '0781208709', '12345678912345');
 
 -- INSERTION DE RESERVATION
-INSERT INTO reservation VALUES(1, 5, '2000-07-03 05:37:00', 5, 'complete');
+INSERT INTO reservation VALUES(1, 5, '2000-07-03 05:37:00', 5, 1);
 INSERT INTO reservation_chambre VALUES(1, 1, '2000-07-03 05:37:00', '2000-08-03 05:37:00');
