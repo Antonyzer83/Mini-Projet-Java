@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -175,10 +176,8 @@ public class HotelView extends JFrame implements IHotelView {
      * Demander le client a choisir pour la reservation
      */
     public void demanderClient() {
-        for (JCheckBox box : this.box) {
-            if (box.isSelected()) {
-                System.out.println(box.getText());
-            }
+        if (this.hotelController.reserverChambres(this.box)) {
+            System.out.println("yes");
         }
     }
 

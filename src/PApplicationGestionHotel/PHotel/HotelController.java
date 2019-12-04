@@ -1,16 +1,21 @@
 package PApplicationGestionHotel.PHotel;
 
+import javax.swing.*;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 public class HotelController implements IHotelController {
 
     private HotelModel hotelModel;
 
+    private Reservation reservation;
+
     public HotelController(HotelModel hotelModel) {
         this.hotelModel = hotelModel;
+        this.reservation = new Reservation();
     }
 
     /**
@@ -65,8 +70,20 @@ public class HotelController implements IHotelController {
     /**
      * Reserve des chambres pour une reservation
      */
-    public void reserverChambres() {
-
+    public boolean reserverChambres(JCheckBox[] boxes) {
+        int count = 0;
+        for (JCheckBox box : boxes) {
+            if (box.isSelected()) {
+                ArrayList<String> chambre= new ArrayList(Arrays.asList(box.getText().split(", ")));
+                this.reservation.ajouterChambre(Integer.parseInt(chambre.get(0)));
+                count++;
+            }
+        }
+        if (count > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

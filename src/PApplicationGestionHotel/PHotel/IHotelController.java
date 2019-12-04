@@ -1,5 +1,6 @@
 package PApplicationGestionHotel.PHotel;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -28,7 +29,7 @@ public interface IHotelController {
     /**
      * Reserve des chambres pour une reservation
      */
-    public void reserverChambres();
+    public boolean reserverChambres(JCheckBox[] boxes);
 
     /**
      * Reserver un client pour une reservation

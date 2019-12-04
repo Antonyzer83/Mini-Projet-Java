@@ -31,6 +31,6 @@ public class Chambre {
     }
 
     public String getName() {
-        return this.type + ", " + this.categorie + ", " + this.prix;
+        return this.id + ", " + this.categorie + ", " + this.type + ", " + this.prix + "€";
     }
 }
