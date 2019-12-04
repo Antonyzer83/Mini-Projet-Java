@@ -1,0 +1,18 @@
+Installer MySQL Connector/J 8.0 :
+- Deux options :
+    - Télécharger MySQL Connector/J 8.0 à l'aide du lien suivante : https://dev.mysql.com/downloads/connector/j/
+    - Choisir le système, pour ma part j'ai choisi "Platform independant".
+    - Télécharger ZIP Archive de préférence.
+    - Dézipper l'archive précédemment téléchargée.
+
+    - Récupérer mysql-connector-java-8.0.18.jar présent dans le dossier resources
+- Sélectionner File -> Project Structure... -> Modules -> Dependencies -> Add -> Jar or directories.
+- Sélectionner le fichier jar mysql-connector-java-8.0.18.jar.
+
+Installer Ini4j :
+- Récupérer ini4j-O.5.4.jar.
+- Sélectionner File -> Project Structure... -> Modules -> Dependencies -> Add -> Jar or directories.
+- Sélectionner le fichier jar ini4j-O.5.4.jar.
+
+Créer Base de données :
+- Lancer le script SQL create_database.sql dans votre SGBD.
