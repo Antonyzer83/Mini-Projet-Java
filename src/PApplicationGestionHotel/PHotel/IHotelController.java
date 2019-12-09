@@ -9,7 +9,7 @@ public interface IHotelController {
     /**
      * Recuperer la totalite des reservations
      */
-    public void recupererReservations();
+    public ArrayList<Reservation> recupererReservations();
 
     /**
      * Recuperer une reservation specifique

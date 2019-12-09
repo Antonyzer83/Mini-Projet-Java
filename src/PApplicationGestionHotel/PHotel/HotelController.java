@@ -19,8 +19,64 @@ public class HotelController implements IHotelController {
     /**
      * Recuperer la totalite des reservations
      */
-    public void recupererReservations() {
+    public ArrayList<Reservation> recupererReservations() {
+        try {
+            ResultSet res = this.hotelModel.recupererReservations();
+            ArrayList<Reservation> reservations = new ArrayList<>();
+            int count = 0;
+            while (res.next())
+            {
+                System.out.println(reservations);
+                if (count > 0 && reservations.get(count - 1).id == res.getInt(1)) {
+                    Chambre chambre = new Chambre(
+                            res.getInt(1),
+                            res.getString(8),
+                            res.getString(12),
+                            res.getString(10),
+                            res.getDouble(9),
+                            res.getDouble(13),
+                            res.getDouble(11)
+                    );
+                    reservations.get(count - 1).ajouterChambre(chambre.getName());
+                } else {
+                    Reservation reservation = new Reservation();
+                    reservation.ajouterId(res.getInt(1));
+                    reservation.ajouterDetails(
+                            res.getInt(2),
+                            res.getDate(3),
+                            res.getInt(4),
+                            res.getDate(5),
+                            res.getDate(6)
+                    );
+                    reservation.ajouterChambre(new Chambre(
+                            res.getInt(7),
+                            res.getString(8),
+                            res.getString(12),
+                            res.getString(10),
+                            res.getDouble(9),
+                            res.getDouble(13),
+                            res.getDouble(11)
+                    ).getName());
+                    reservation.ajouterClient(new Client(
+                            res.getInt(14),
+                            res.getString(15),
+                            res.getString(16),
+                            res.getInt(17),
+                            res.getString(18),
+                            res.getString(19)
+                    ).getName());
 
+                    reservations.add(reservation);
+                    count++;
+                }
+            }
+            System.out.println(reservations);
+            return reservations;
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println(e.getStackTrace()[0].getLineNumber());
+            return null;
+        }
     }
 
     /**

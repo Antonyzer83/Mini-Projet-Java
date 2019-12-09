@@ -18,7 +18,6 @@ public class Chambre {
         this.type = type;
         this.categorie = categorie;
         this.prix = this.calculPrixNuit(prixSaison, prixType, prixCategorie);
-        //System.out.println(this);
     }
 
     @Override

@@ -34,12 +34,14 @@ public class HotelModel implements IHotelModel {
     public ResultSet recupererReservations() {
         try {
             Statement stmt = this.connection.createStatement();
-            ResultSet res = stmt.executeQuery("select reservation.id_reservation, nb_nuits, date_reservation, nb_personne, date_debut, date_fin, t.nom, c.nom " +
+            ResultSet res = stmt.executeQuery("select reservation.id_reservation, nb_nuits, date_reservation, nb_personne, date_debut, date_fin, rc.id_chambre, s.nom as saison, s.pourcentage as prixSaison, c.nom as categorie, c.pourcentage as prixCategorie, t.nom as type, t.prix as prixCategorie, cl.id_client, cl.nom, prenom, cin, telephone, cb " +
                     "FROM reservation " +
                     "JOIN reservation_chambre rc on reservation.id_reservation = rc.id_reservation " +
                     "JOIN chambre ch on rc.id_chambre = ch.id_chambre " +
+                    "JOIN saison s on ch.id_saison = s.id_saison " +
                     "JOIN categorie c on ch.id_categorie = c.id_categorie " +
-                    "JOIN type t on ch.id_type = t.id_type;");
+                    "JOIN type t on ch.id_type = t.id_type " +
+                    "JOIN client cl on cl.id_client = reservation.id_client;");
             return res;
         } catch (Exception e) {
             System.out.println(e);

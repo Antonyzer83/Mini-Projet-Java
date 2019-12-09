@@ -1,8 +1,6 @@
 package PApplicationGestionHotel.PHotel;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -113,7 +111,41 @@ public class HotelView extends JFrame implements IHotelView {
      * Afficher la totalite des reservations
      */
     public void afficherReservations() {
+        ArrayList<Reservation> reservations = this.hotelController.recupererReservations();
+        if (reservations != null) {
+            getContentPane().removeAll();
+            setSize(400, 600);
+            setLayout(new GridLayout(0, 1));
 
+            JPanel mainPanel = new JPanel(new GridLayout(0, 1));
+
+            for (Reservation reservation : reservations) {
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                JPanel secondPanel = new JPanel(new GridLayout(2, 0));
+                panel.setBorder(BorderFactory.createTitledBorder("Réservation n°" + reservation.id));
+
+                JLabel title = new JLabel(reservation.getName());
+                JLabel client = new JLabel("Client : " + reservation.client);
+                JLabel chambreTitle = new JLabel("Chambres : ");
+
+                panel.add(title);
+                panel.add(client);
+                panel.add(chambreTitle);
+
+                for (String chambre : reservation.chambres) {
+                    JLabel chambreLabel = new JLabel(chambre);
+                    panel.add(chambreLabel);
+                }
+
+                secondPanel.add(new JScrollPane(panel));
+                mainPanel.add(secondPanel);
+            }
+
+            add(new JScrollPane(mainPanel));
+
+            validate();
+            repaint();
+        }
     }
 
     /**
@@ -128,7 +160,7 @@ public class HotelView extends JFrame implements IHotelView {
      */
     public void afficherChambresDispos() {
         // Recuperation des chambres disponibles pour une periode
-        ArrayList<Chambre> chambres = hotelController.recupererChambresDipos(this.firstDate.getValue(), this.secondDate.getValue());
+        ArrayList<Chambre> chambres = this.hotelController.recupererChambresDipos(this.firstDate.getValue(), this.secondDate.getValue());
         if (chambres != null) {
             getContentPane().removeAll();
             setSize(400, 450);
