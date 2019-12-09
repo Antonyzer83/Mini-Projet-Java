@@ -87,7 +87,7 @@ public interface IHotelView {
     /**
      * Recuperer le formulaire pour l'ajout d'un client
      */
-    public void recupererFormulaireClient();
+    public void recupererFormulaireClient(boolean mode);
 
     /**
      * Afficher le formulaire pour la MAJ d'un client

@@ -69,7 +69,7 @@ public interface IHotelController {
     /**
      * Ajouter un nouveau client
      */
-    public void ajouterClient();
+    public boolean ajouterClient(boolean mode, String nom, String prenom, String cin, String telephone, String cb);
 
     /**
      * Verifier la conformite d'un formulaire
@@ -89,5 +89,5 @@ public interface IHotelController {
     /**
      * Recuperer la totalite des chambres
      */
-    public void recupererChambres();
+    public ArrayList<Chambre> recupererChambres();
 }

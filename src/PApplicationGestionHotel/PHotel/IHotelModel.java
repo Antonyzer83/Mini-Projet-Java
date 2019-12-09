@@ -58,7 +58,7 @@ public interface IHotelModel {
     /**
      * Ajouter un nouveau client
      */
-    public boolean ajouterClient(String nom, String prenom, int cin, String telephone);
+    public int ajouterClient(String nom, String prenom, int cin, String telephone, String cb);
 
     /**
      * Recuperer la totalite des clients
@@ -69,5 +69,5 @@ public interface IHotelModel {
      * Recuperer les chambres disponibles pendant une periode
      * @return
      */
-    public ResultSet recupererChambresDispos(String date_debut, String date_fin);
+    public ResultSet recupererChambresDispos(Date date_debut, Date date_fin);
 }

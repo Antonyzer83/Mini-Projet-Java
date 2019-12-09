@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Mini-Projet-Java:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Mini_Projet_Java_jar</output-path>
+    <root id="archive" name="Mini-Projet-Java.jar">
+      <element id="module-output" name="Mini-Projet-Java" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/ini4j-0.5.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/mysql-connector-java-8.0.18/mysql-connector-java-8.0.18/mysql-connector-java-8.0.18.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

@@ -41,6 +41,7 @@ public class HotelController implements IHotelController {
      * Recuperer les chambres disponibles pour une periode
      */
     public ArrayList<Chambre> recupererChambresDipos(Object firstDate, Object secondDate) {
+        this.reservation = new Reservation();
         //Conversion des objets date en String
         String date_d = new SimpleDateFormat("dd-MM-yyyy").format(firstDate);
         String date_f = new SimpleDateFormat("dd-MM-yyyy").format(secondDate);
@@ -53,7 +54,7 @@ public class HotelController implements IHotelController {
             // Vérification que la date finale est supérieure à la date initiale
             if (date_debut.before(date_fin)) {
                 // Récupération des chambres disponibles
-                ResultSet res = hotelModel.recupererChambresDispos(date_d, date_f);
+                ResultSet res = hotelModel.recupererChambresDispos( new java.sql.Date(date_debut.getTime()),  new java.sql.Date(date_fin.getTime()));
                 ArrayList<Chambre> chambres = new ArrayList<>();
                 // Pour chaque chambre
                 while (res.next()) {
@@ -166,8 +167,17 @@ public class HotelController implements IHotelController {
     /**
      * Ajouter un nouveau client
      */
-    public void ajouterClient() {
-
+    public boolean ajouterClient(boolean mode, String nom, String prenom, String cin, String telephone, String cb) {
+        if (!nom.equals("") && !prenom.equals("") && !cin.equals("") && !telephone.equals("") && !cb.equals("")) {
+            int id = this.hotelModel.ajouterClient(nom, prenom, Integer.parseInt(cin), telephone, cb);
+            if (id != 0) {
+                this.reservation.ajouterClient(id + ", " + nom + " " + prenom + ", " + cin);
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -193,7 +203,9 @@ public class HotelController implements IHotelController {
     /**
      * Recuperer la totalite des chambres
      */
-    public void recupererChambres() {
-
+    public ArrayList<Chambre> recupererChambres() {
+        ResultSet res = this.hotelModel.recupererChambres();
+        ArrayList<Chambre> chambres;
+        return null;
     }
 }

@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -36,10 +35,34 @@ public class HotelView extends JFrame implements IHotelView {
      */
     private JCheckBox[] box;
 
+    /**
+     * Nom du client
+     */
+    private JTextField nomField = new JTextField();
+
+    /**
+     * Prenom du client
+     */
+    private JTextField prenomField = new JTextField();
+
+    /**
+     * CIN du client
+     */
+    private JTextField cinField = new JTextField();
+
+    /**
+     * Numero de telephone du client
+     */
+    private JTextField telephoneField = new JTextField();
+
+    /**
+     * Numero de carte bancaire du client
+     */
+    private JTextField cbField = new JTextField();
+
     public HotelView(HotelController hotelController) {
         this.hotelController = hotelController;
 
-        setLayout(new GridLayout(2, 2));
         setSize(400, 400);
         setTitle("Gestion Hotel");
         setResizable(false);
@@ -55,6 +78,8 @@ public class HotelView extends JFrame implements IHotelView {
      * Afficher le menu general de l'application
      */
     public void afficherMenu() {
+        getContentPane().removeAll();
+        setLayout(new GridLayout(2, 2));
         // Création de boutons pour chaque option
         JButton firstButton = new JButton("Ajouter une réservation");
         firstButton.addActionListener(new ButtonHandler());
@@ -70,6 +95,9 @@ public class HotelView extends JFrame implements IHotelView {
         add(secondButton);
         add(thirdButton);
         add(fourthButton);
+
+        repaint();
+        validate();
     }
 
     public void refresh() {
@@ -153,7 +181,17 @@ public class HotelView extends JFrame implements IHotelView {
      * Afficher succes d'une operation
      */
     public void afficherSucces() {
+        getContentPane().removeAll();
 
+        JLabel label = new JLabel("Succès de l'opération");
+        JButton button = new JButton("Retour menu");
+        button.addActionListener(new ButtonHandler());
+
+        add(label);
+        add(button);
+
+        repaint();
+        validate();
     }
 
     /**
@@ -205,7 +243,7 @@ public class HotelView extends JFrame implements IHotelView {
         if (this.hotelController.reserverChambres(this.box)) {
             getContentPane().removeAll();
             setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-            setSize(400, 400);
+            setSize(400, 500);
 
             add(this.afficherClients(true));
             add(this.afficherFormulaireClient(true));
@@ -248,6 +286,7 @@ public class HotelView extends JFrame implements IHotelView {
      */
     public void validerReservation() {
         this.hotelController.ajouterReservation();
+        this.afficherSucces();
     }
 
     /**
@@ -295,7 +334,31 @@ public class HotelView extends JFrame implements IHotelView {
      */
     public JPanel afficherFormulaireClient(boolean mode) {
         if (mode) {
-            return new JPanel();
+            JPanel panel = new JPanel();
+            panel.setLayout(new GridLayout(6, 2));
+
+            JLabel nomLabel = new JLabel("Nom : ");
+            JLabel prenomLabel = new JLabel("Prenom : ");
+            JLabel cinLabel = new JLabel("CIN : ");
+            JLabel telephoneLabel = new JLabel("Téléphone : ");
+            JLabel cbLabel = new JLabel("CB : ");
+
+            JButton button = new JButton("Nouveau client");
+            button.addActionListener(new ButtonHandler());
+
+            panel.add(nomLabel);
+            panel.add(this.nomField);
+            panel.add(prenomLabel);
+            panel.add(this.prenomField);
+            panel.add(cinLabel);
+            panel.add(this.cinField);
+            panel.add(telephoneLabel);
+            panel.add(this.telephoneField);
+            panel.add(cbLabel);
+            panel.add(this.cbField);
+            panel.add(button);
+
+            return panel;
         } else {
             return new JPanel();
         }
@@ -304,8 +367,10 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Recuperer le formulaire pour l'ajout d'un client
      */
-    public void recupererFormulaireClient() {
-
+    public void recupererFormulaireClient(boolean mode) {
+        if (this.hotelController.ajouterClient(mode, this.nomField.getText(), this.prenomField.getText(), this.cinField.getText(), this.telephoneField.getText(), this.cbField.getText())) {
+            this.afficherRecapitulatif();
+        }
     }
 
     /**
@@ -326,7 +391,10 @@ public class HotelView extends JFrame implements IHotelView {
      * Afficher la totalite des chambres
      */
     public void afficherChambres() {
+        ArrayList<Chambre> chambres = this.hotelController.recupererChambres();
+        if (chambres != null) {
 
+        }
     }
 
     class ButtonHandler implements ActionListener {
@@ -358,8 +426,14 @@ public class HotelView extends JFrame implements IHotelView {
                 case "Choisir Client":
                     recupererClient();
                     break;
+                case "Nouveau client":
+                    recupererFormulaireClient(true);
+                    break;
                 case "Valider Réservation":
                     validerReservation();
+                    break;
+                case "Retour menu":
+                    afficherMenu();
                     break;
             }
         }

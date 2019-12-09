@@ -23,7 +23,7 @@ public class HotelModel implements IHotelModel {
             );
             return con;
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("La connexion à la base de données a echoué :" + e);
             return null;
         }
     }
@@ -203,18 +203,24 @@ public class HotelModel implements IHotelModel {
     /**
      * Ajouter un nouveau client
      */
-    public boolean ajouterClient(String nom, String prenom, int cin, String telephone) {
+    public int ajouterClient(String nom, String prenom, int cin, String telephone, String cb) {
         try {
-            PreparedStatement stmt = this.connection.prepareStatement("INSERT INTO client(nom, prenom, cin, telephone) " +
-                    "VALUES(?, ?, ?, ?);");
+            PreparedStatement stmt = this.connection.prepareStatement("INSERT INTO client(nom, prenom, cin, telephone, cb) " +
+                    "VALUES(?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, nom);
             stmt.setString(2, prenom);
             stmt.setInt(3, cin);
             stmt.setString(4, telephone);
-            return stmt.execute();
+            stmt.setString(5, cb);
+            stmt.execute();
+            ResultSet res = stmt.getGeneratedKeys();
+            if (res.next()) {
+                return res.getInt(1);
+            }
+            return 0;
         } catch (Exception e) {
             System.out.println(e);
-            return false;
+            return 0;
         }
     }
 
@@ -237,19 +243,19 @@ public class HotelModel implements IHotelModel {
      * Recuperer les chambres disponibles pendant une periode
      * @return
      */
-    public ResultSet recupererChambresDispos(String date_debut, String date_fin) {
+    public ResultSet recupererChambresDispos(Date date_debut, Date date_fin) {
         try {
             PreparedStatement stmt = this.connection.prepareStatement("SELECT chambre.id_chambre, c.nom, c.pourcentage, t.nom, t.prix, s.nom, s.pourcentage " +
                     "FROM reservation_chambre, chambre " +
                     "JOIN type t on chambre.id_type = t.id_type " +
                     "JOIN categorie c on chambre.id_categorie = c.id_categorie " +
                     "JOIN saison s on chambre.id_saison = s.id_saison " +
-                    "WHERE (! ? BETWEEN date_debut AND date_fin) AND (! ? BETWEEN date_debut AND date_fin) " +
+                    "WHERE (? NOT BETWEEN date_debut AND date_fin) AND (? NOT BETWEEN date_debut AND date_fin) " +
                     "AND chambre.id_chambre = reservation_chambre.id_chambre " +
                     "OR chambre.id_chambre NOT IN (SELECT id_chambre FROM reservation_chambre)" +
                     "GROUP BY chambre.id_chambre;");
-            stmt.setString(1, date_debut);
-            stmt.setString(2, date_fin);
+            stmt.setDate(1, date_debut);
+            stmt.setDate(2, date_fin);
             ResultSet res = stmt.executeQuery();
             return res;
         } catch (Exception e) {
