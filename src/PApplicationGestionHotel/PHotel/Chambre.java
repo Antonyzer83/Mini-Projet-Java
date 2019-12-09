@@ -12,12 +12,12 @@ public class Chambre {
 
     public double prix;
 
-    public Chambre(int id, String saison, String type, String categorie, double prix) {
+    public Chambre(int id, String saison, String type, String categorie, double prixSaison, double prixType, double prixCategorie) {
         this.id = id;
         this.saison = saison;
         this.type = type;
         this.categorie = categorie;
-        this.prix = prix;
+        this.prix = this.calculPrixNuit(prixSaison, prixType, prixCategorie);
         //System.out.println(this);
     }
 
@@ -32,5 +32,9 @@ public class Chambre {
 
     public String getName() {
         return this.id + ", " + this.categorie + ", " + this.type + ", " + this.prix + "€";
+    }
+
+    private double calculPrixNuit(double saison, double type, double categorie) {
+        return (double) Math.round(saison * type * categorie * 10) / 10;
     }
 }

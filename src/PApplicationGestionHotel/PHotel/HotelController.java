@@ -58,8 +58,8 @@ public class HotelController implements IHotelController {
                 ArrayList<Chambre> chambres = new ArrayList<>();
                 // Pour chaque chambre
                 while (res.next()) {
-                    double prix = (double) Math.round(res.getDouble(3) * res.getDouble(5) * res.getDouble(7) * 10) / 10;
-                    chambres.add(new Chambre(res.getInt(1), res.getString(6), res.getString(2), res.getString(4), prix));
+                    //double prix = (double) Math.round(res.getDouble(3) * res.getDouble(5) * res.getDouble(7) * 10) / 10;
+                    chambres.add(new Chambre(res.getInt(1), res.getString(6), res.getString(2), res.getString(4), res.getDouble(5), res.getDouble(7), res.getDouble(3)));
                 }
                 return chambres;
             }
@@ -204,8 +204,16 @@ public class HotelController implements IHotelController {
      * Recuperer la totalite des chambres
      */
     public ArrayList<Chambre> recupererChambres() {
-        ResultSet res = this.hotelModel.recupererChambres();
-        ArrayList<Chambre> chambres;
-        return null;
+        try {
+            ResultSet res = this.hotelModel.recupererChambres();
+            ArrayList<Chambre> chambres = new ArrayList<>();
+            while (res.next()) {
+                chambres.add(new Chambre(res.getInt(1), res.getString(2), res.getString(6), res.getString(4), res.getDouble(3), res.getDouble(5), res.getDouble(7)));
+            }
+            return chambres;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
     }
 }

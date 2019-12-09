@@ -1,6 +1,9 @@
 package PApplicationGestionHotel.PHotel;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -400,7 +403,16 @@ public class HotelView extends JFrame implements IHotelView {
     public void afficherChambres() {
         ArrayList<Chambre> chambres = this.hotelController.recupererChambres();
         if (chambres != null) {
+            getContentPane().removeAll();
+            JPanel panel = new JPanel(new GridLayout(0, 1));
+            for (Chambre chambre : chambres) {
+                JLabel label = new JLabel(chambre.getName());
+                panel.add(label);
+            }
+            add(panel);
 
+            validate();
+            repaint();
         }
     }
 

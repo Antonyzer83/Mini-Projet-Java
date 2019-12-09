@@ -53,7 +53,7 @@ public class HotelModel implements IHotelModel {
     public ResultSet recupererChambres() {
         try {
             Statement stmt = this.connection.createStatement();
-            ResultSet res = stmt.executeQuery(" SELECT id_chambre, s.nom, c.nom, t.nom " +
+            ResultSet res = stmt.executeQuery(" SELECT id_chambre, s.nom as saison, s.pourcentage as prixSaison, c.nom as categorie, c.pourcentage as prixCategorie, t.nom as type, t.prix as prixCategorie " +
                     "FROM chambre " +
                     "JOIN saison s on chambre.id_saison = s.id_saison " +
                     "JOIN categorie c on chambre.id_categorie = c.id_categorie " +
