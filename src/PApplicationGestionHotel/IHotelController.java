@@ -67,6 +67,8 @@ public interface IHotelController {
      *
      * @param id
      *          Id de la reservation
+     * @return
+     *          Succes
      */
     public boolean annulerReservation(int id);
 

@@ -217,6 +217,8 @@ public class HotelController implements IHotelController {
      *
      * @param id
      *          Id de la reservation
+     * @return
+     *          Succes
      */
     public boolean annulerReservation(int id) {
         if (this.hotelModel.supprimerReservation(id)) {
