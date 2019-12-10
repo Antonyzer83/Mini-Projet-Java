@@ -11,31 +11,49 @@ public interface IHotelController {
 
     /**
      * Recuperer la totalite des reservations
+     *
+     * @return
+     *          Liste des reservations
      */
     public ArrayList<Reservation> recupererReservations();
 
     /**
-     * Recuperer une reservation specifique
-     */
-    public void recupererReservation();
-
-    /**
      * Recuperer la reservation en cours d'enregistrement
+     *
+     * @return
+     *          Reservation en cours
      */
     public Reservation recupererReservationEnCours();
 
     /**
      * Recuperer les chambres disponibles pour une periode
+     *
+     * @param firstDate
+     *          Date de debut
+     * @param secondDate
+     *          Date de fin
+     * @return
+     *          Liste des chambres disponibles
      */
     public ArrayList<Chambre> recupererChambresDipos(Object firstDate, Object secondDate);
 
     /**
      * Reserve des chambres pour une reservation
+     *
+     * @param boxes
+     *          Cases à choix
+     * @return
+     *          Succes
      */
     public boolean reserverChambres(JCheckBox[] boxes);
 
     /**
      * Reserver un client pour une reservation
+     *
+     * @param bg
+     *          Groupe de boutons
+     * @return
+     *          Succes
      */
     public boolean reserverClient(ButtonGroup bg);
 
@@ -46,31 +64,37 @@ public interface IHotelController {
 
     /**
      * Annuler une reservation
+     *
+     * @param id
+     *          Id de la reservation
      */
     public boolean annulerReservation(int id);
 
     /**
-     * Changer de date pour une reservation
-     */
-    public void changerDate();
-
-    /**
-     * Verifier la disponibilite d'une chambre pour une periode
-     */
-    public void verifierDisponibilite();
-
-    /**
-     * Calculer le prix d'une chambre
-     */
-    public void calculerPrix();
-
-    /**
      * Recuperer la totalite des clients
+     *
+     * @return
+     *          Liste des clients
      */
     public ArrayList<Client> recupererClients();
 
     /**
      * Ajouter un nouveau client
+     *
+     * @param mode
+     *          Mode
+     * @param nom
+     *          Nom du client
+     * @param prenom
+     *          Prenom du client
+     * @param cin
+     *          CIN du client
+     * @param telephone
+     *          Numero de telephone du client
+     * @param cb
+     *          Numero de carte bancaire
+     * @return
+     *          Succes
      */
     public boolean ajouterClient(boolean mode, String nom, String prenom, String cin, String telephone, String cb);
 
@@ -91,6 +115,9 @@ public interface IHotelController {
 
     /**
      * Recuperer la totalite des chambres
+     *
+     * @return
+     *          Liste de chambres
      */
     public ArrayList<Chambre> recupererChambres();
 }
