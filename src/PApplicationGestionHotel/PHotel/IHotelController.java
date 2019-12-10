@@ -44,7 +44,7 @@ public interface IHotelController {
     /**
      * Annuler une reservation
      */
-    public void annulerReservation();
+    public boolean annulerReservation(int id);
 
     /**
      * Changer de date pour une reservation

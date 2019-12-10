@@ -26,10 +26,9 @@ public class HotelController implements IHotelController {
             int count = 0;
             while (res.next())
             {
-                System.out.println(reservations);
                 if (count > 0 && reservations.get(count - 1).id == res.getInt(1)) {
                     Chambre chambre = new Chambre(
-                            res.getInt(1),
+                            res.getInt(7),
                             res.getString(8),
                             res.getString(12),
                             res.getString(10),
@@ -70,11 +69,9 @@ public class HotelController implements IHotelController {
                     count++;
                 }
             }
-            System.out.println(reservations);
             return reservations;
         } catch (Exception e) {
             System.out.println(e);
-            System.out.println(e.getStackTrace()[0].getLineNumber());
             return null;
         }
     }
@@ -178,8 +175,14 @@ public class HotelController implements IHotelController {
     /**
      * Annuler une reservation
      */
-    public void annulerReservation() {
-
+    public boolean annulerReservation(int id) {
+        if (this.hotelModel.supprimerReservation(id)) {
+            System.out.println("YEEEES");
+            return true;
+        } else {
+            System.out.println("NOOOO");
+            return false;
+        }
     }
 
     /**

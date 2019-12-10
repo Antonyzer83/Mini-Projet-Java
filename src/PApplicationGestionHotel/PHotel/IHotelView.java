@@ -47,7 +47,7 @@ public interface IHotelView {
     /**
      * Demander la validation de l'annulation
      */
-    public void checkAnnulerReservation();
+    public void checkAnnulerReservation(int id);
 
     /**
      * Annuler une reservation

@@ -128,6 +128,14 @@ public class HotelView extends JFrame implements IHotelView {
                 JLabel client = new JLabel("Client : " + reservation.client);
                 JLabel chambreTitle = new JLabel("Chambres : ");
 
+                JButton button = new JButton("X");
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        checkAnnulerReservation(reservation.id);
+                    }
+                });
+
                 panel.add(title);
                 panel.add(client);
                 panel.add(chambreTitle);
@@ -136,6 +144,8 @@ public class HotelView extends JFrame implements IHotelView {
                     JLabel chambreLabel = new JLabel(chambre);
                     panel.add(chambreLabel);
                 }
+
+                panel.add(button);
 
                 secondPanel.add(new JScrollPane(panel));
                 mainPanel.add(secondPanel);
@@ -295,8 +305,15 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Demander la validation de l'annulation
      */
-    public void checkAnnulerReservation() {
+    public void checkAnnulerReservation(int id) {
+        if (this.hotelController.annulerReservation(id)) {
+            JDialog dialog = new JDialog();
+            dialog.setSize(200, 200);
+            dialog.setTitle("Réservation supprimée");
 
+            JOptionPane.showMessageDialog(dialog, "Vous avez supprimé la réservation n°" + id);
+            this.afficherReservations();
+        }
     }
 
     /**
