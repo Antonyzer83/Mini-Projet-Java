@@ -1,4 +1,4 @@
-package PApplicationGestionHotel.PHotel;
+package PApplicationGestionHotel;
 
 import javax.swing.*;
 

@@ -1,4 +1,4 @@
-package PApplicationGestionHotel.PHotel;
+package PApplicationGestionHotel;
 
 import java.sql.Date;
 import java.sql.ResultSet;

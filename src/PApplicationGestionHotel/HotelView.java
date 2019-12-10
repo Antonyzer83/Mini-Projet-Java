@@ -1,4 +1,8 @@
-package PApplicationGestionHotel.PHotel;
+package PApplicationGestionHotel;
+
+import PApplicationGestionHotel.PHotel.Chambre;
+import PApplicationGestionHotel.PHotel.Client;
+import PApplicationGestionHotel.PHotel.Reservation;
 
 import javax.swing.*;
 import java.awt.*;

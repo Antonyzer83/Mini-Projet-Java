@@ -1,21 +1,40 @@
-package PApplicationGestionHotel.PHotel;
+package PApplicationGestionHotel;
 
 import java.sql.*;
 import java.io.File;
+
 import org.ini4j.*;
 
 public class HotelModel implements IHotelModel {
 
+    /**
+     * Connexion a la BDD
+     */
     private Connection connection;
 
+    /**
+     * Constructeur de la classe HotelModel
+     *
+     * Initialisation de la connexion avec la BDD
+     */
     public HotelModel() {
         this.connection = this.connectBDD();
     }
 
+    /**
+     * Initialisation de la connexion a la BDD
+     *
+     * Lecture du db.ini
+     *
+     * @return
+     *          Connexion avec la BDD
+     */
     private Connection connectBDD() {
         try {
-            Wini ini = new Wini(new File("src/PApplicationGestionHotel/PHotel/db.ini"));
+            // Lecture du db.ini
+            Wini ini = new Wini(new File("resources/db.ini"));
             Class.forName("com.mysql.cj.jdbc.Driver");
+            // Connexion a la BDD
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://" + ini.get("database", "address") + ":" + ini.get("database", "port") + "/" + ini.get("database", "table") + "?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC",
                     ini.get("database", "user"),
@@ -30,6 +49,9 @@ public class HotelModel implements IHotelModel {
 
     /**
      * Recuperer la totalite des reservations
+     *
+     * @return
+     *          Totalite des reservations
      */
     public ResultSet recupererReservations() {
         try {
@@ -51,6 +73,9 @@ public class HotelModel implements IHotelModel {
 
     /**
      * Recuperer la totalite des chambres
+     *
+     * @return
+     *          Totalite des chambres
      */
     public ResultSet recupererChambres() {
         try {
@@ -69,15 +94,26 @@ public class HotelModel implements IHotelModel {
 
     /**
      * Ajouter une nouvelle reservation
+     *
+     * @param nb_nuits
+     *          Nombre de nuits
+     * @param date_reservation
+     *          Date de reservation
+     * @param nb_personne
+     *          Nombre de personnes
+     * @param client_id
+     *          Id du client
+     * @return
+     *          Id de la reservation
      */
-    public int ajouterReservation(int nb_nuits, Date date_reservation, int nb_personne, int id_client) {
+    public int ajouterReservation(int nb_nuits, Date date_reservation, int nb_personne, int client_id) {
         try {
             PreparedStatement stmt = this.connection.prepareStatement("INSERT INTO reservation (nb_nuits, date_reservation, nb_personne, id_client) " +
                     "VALUES(?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
             stmt.setInt(1, nb_nuits);
             stmt.setDate(2, date_reservation);
             stmt.setInt(3, nb_personne);
-            stmt.setInt(4, id_client);
+            stmt.setInt(4, client_id);
             stmt.execute();
             ResultSet res = stmt.getGeneratedKeys();
             if (res.next()) {
@@ -92,6 +128,17 @@ public class HotelModel implements IHotelModel {
 
     /**
      * Ajouter une reservation et une chambre
+     *
+     * @param id_reservation
+     *          Id de la reservation
+     * @param id_chambre
+     *          Id de la chambre
+     * @param date_debut
+     *          Date de debut de la reservation
+     * @param date_fin
+     *          Date de fin de la reservation
+     * @return
+     *          Succes de l'ajout de la reservation
      */
     public boolean ajouterReservationChambre(int id_reservation, int id_chambre, Date date_debut, Date date_fin) {
         try {
@@ -110,6 +157,11 @@ public class HotelModel implements IHotelModel {
 
     /**
      * Supprimer une reservation
+     *
+     * @param id_reservation
+     *          Id de la reservation
+     * @return
+     *          Succes de la suppression de la reservation
      */
     public boolean supprimerReservation(int id_reservation) {
         try {
@@ -126,45 +178,6 @@ public class HotelModel implements IHotelModel {
     }
 
     /**
-     * Recuperer une reservation specifique
-     */
-    public ResultSet recupererReservation(int id_reservation) {
-        try {
-            PreparedStatement stmt = this.connection.prepareStatement("SELECT reservation.id_reservation, nb_nuits, date_reservation, nb_personne, date_debut, date_fin, t.nom, c.nom " +
-                    "FROM reservation " +
-                    "JOIN reservation_chambre rc on reservation.id_reservation = rc.id_reservation " +
-                    "JOIN chambre ch on rc.id_chambre = ch.id_chambre " +
-                    "JOIN categorie c on ch.id_categorie = c.id_categorie " +
-                    "JOIN type t on ch.id_type = t.id_type " +
-                    "WHERE reservation.id_reservation = ?;");
-            stmt.setInt(1, id_reservation);
-            ResultSet res = stmt.executeQuery();
-            return res;
-        } catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
-    }
-
-    /**
-     * Recuperer les dates d'une chambre
-     */
-    public ResultSet recupererDateChambre(int id_reservation, int id_chambre) {
-        try {
-            PreparedStatement stmt = this.connection.prepareStatement("SELECT date_debut, date_fin " +
-                    "FROM reservation_chambre " +
-                    "WHERE id_chambre = ? AND id_reservation = ?;");
-            stmt.setInt(1, id_chambre);
-            stmt.setInt(2, id_reservation);
-            ResultSet res = stmt.executeQuery();
-            return res;
-        } catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
-    }
-
-    /**
      * Mettre a jour la date d'une chambre
      */
     public void MAJDateChambre() {
@@ -176,7 +189,10 @@ public class HotelModel implements IHotelModel {
     }
 
     /**
-     * Recuperer un client specifique
+     * Recuperer la totalite des clients
+     *
+     * @return
+     *          Totalite des clients
      */
     public ResultSet recupererClient(int id_client) {
         try {
@@ -205,6 +221,19 @@ public class HotelModel implements IHotelModel {
 
     /**
      * Ajouter un nouveau client
+     *
+     * @param nom
+     *          Nom de famille
+     * @param prenom
+     *          Prenom du client
+     * @param cin
+     *          CIN du client
+     * @param telephone
+     *          Numero de telephone
+     * @param cb
+     *          Numero de carte bancaire
+     * @return
+     *          Id du client ajoute
      */
     public int ajouterClient(String nom, String prenom, int cin, String telephone, String cb) {
         try {
@@ -229,6 +258,9 @@ public class HotelModel implements IHotelModel {
 
     /**
      * Recuperer la totalite des clients
+     *
+     * @return
+     *          Totalite des clients
      */
     public ResultSet recupererClients() {
         try {
@@ -244,7 +276,13 @@ public class HotelModel implements IHotelModel {
 
     /**
      * Recuperer les chambres disponibles pendant une periode
+     *
+     * @param date_debut
+     *          Date de debut de la periode
+     * @param date_fin
+     *          Date de fin de la periode
      * @return
+     *          Chambres disponibles pendant la periode
      */
     public ResultSet recupererChambresDispos(Date date_debut, Date date_fin) {
         try {

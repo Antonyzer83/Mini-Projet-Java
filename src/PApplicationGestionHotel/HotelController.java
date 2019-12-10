@@ -1,4 +1,6 @@
-package PApplicationGestionHotel.PHotel;
+package PApplicationGestionHotel;
+
+import PApplicationGestionHotel.PHotel.*;
 
 import javax.swing.*;
 import java.sql.ResultSet;

@@ -1,9 +1,5 @@
 package PApplicationGestionHotel;
 
-import PApplicationGestionHotel.PHotel.HotelController;
-import PApplicationGestionHotel.PHotel.HotelModel;
-import PApplicationGestionHotel.PHotel.HotelView;
-
 public class Main {
 
     public static void main(String[] args) {
