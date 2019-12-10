@@ -1,7 +1,6 @@
 package PApplicationGestionHotel.PHotel;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -81,6 +80,7 @@ public class HotelView extends JFrame implements IHotelView {
     public void afficherMenu() {
         getContentPane().removeAll();
         setLayout(new GridLayout(2, 2));
+        setSize(400, 400);
         // Création de boutons pour chaque option
         JButton firstButton = new JButton("Ajouter une réservation");
         firstButton.addActionListener(new ButtonHandler());
@@ -128,11 +128,11 @@ public class HotelView extends JFrame implements IHotelView {
                 JLabel client = new JLabel("Client : " + reservation.client);
                 JLabel chambreTitle = new JLabel("Chambres : ");
 
-                JButton button = new JButton("X");
+                JButton button = new JButton("Annuler réservation");
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        checkAnnulerReservation(reservation.id);
+                        annulerReservation(reservation.id);
                     }
                 });
 
@@ -147,7 +147,13 @@ public class HotelView extends JFrame implements IHotelView {
 
                 panel.add(button);
 
+                JButton button2 = new JButton("Retour menu");
+                button2.addActionListener(new ButtonHandler());
+
+                panel.add(button2);
+
                 secondPanel.add(new JScrollPane(panel));
+
                 mainPanel.add(secondPanel);
             }
 
@@ -156,13 +162,6 @@ public class HotelView extends JFrame implements IHotelView {
             validate();
             repaint();
         }
-    }
-
-    /**
-     * Afficher une reservation specifique
-     */
-    public void afficherReservation() {
-
     }
 
     /**
@@ -292,7 +291,7 @@ public class HotelView extends JFrame implements IHotelView {
             JPanel container = new JPanel();
 
             container.add(this.afficherClients(true));
-            container.add(this.afficherFormulaireClient(true));
+            container.add(this.afficherFormulaireClient(true, true));
 
             container.setLayout(new GridLayout(1, 2));
             add(container);
@@ -305,7 +304,7 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Demander la validation de l'annulation
      */
-    public void checkAnnulerReservation(int id) {
+    public void annulerReservation(int id) {
         if (this.hotelController.annulerReservation(id)) {
             JDialog dialog = new JDialog();
             dialog.setSize(200, 200);
@@ -314,27 +313,6 @@ public class HotelView extends JFrame implements IHotelView {
             JOptionPane.showMessageDialog(dialog, "Vous avez supprimé la réservation n°" + id);
             this.afficherReservations();
         }
-    }
-
-    /**
-     * Annuler une reservation
-     */
-    public void annulerReservation() {
-
-    }
-
-    /**
-     * Recuperer les dates entrees
-     */
-    public void recupererDates() {
-
-    }
-
-    /**
-     * Recuperer les chambres selectionnees pour une reservation
-     */
-    public void recupererChambresSelectionnees() {
-
     }
 
     /**
@@ -362,27 +340,52 @@ public class HotelView extends JFrame implements IHotelView {
         ArrayList<Client> clients = this.hotelController.recupererClients();
         if (clients != null) {
             JPanel panel = new JPanel(new GridLayout(0, 1));
-            JPanel secondPanel = new JPanel(new GridLayout(2, 0));
-            this.bg = new ButtonGroup();
-            for (Client client : clients) {
-                if (mode) {
+            JPanel secondPanel = new JPanel();
+
+            if (mode) {
+                panel.setBorder(BorderFactory.createTitledBorder("Choisir un client."));
+                secondPanel.setLayout(new GridLayout(2, 0));
+                this.bg = new ButtonGroup();
+
+                for (Client client : clients) {
                     JRadioButton jRadioButton = new JRadioButton(client.getName());
                     jRadioButton.setActionCommand(client.getName());
-                    bg.add(jRadioButton);
+                    this.bg.add(jRadioButton);
                     panel.add(jRadioButton);
-                } else {
-                    JLabel label = new JLabel(client.getName());
-                    add(label);
                 }
-            }
-            panel.setBorder(BorderFactory.createTitledBorder("Choisir un client."));
-            secondPanel.add(new JScrollPane(panel));
-            if (mode) {
+
+                secondPanel.add(new JScrollPane(panel));
+
                 JButton button = new JButton("Choisir Client");
                 button.addActionListener(new ButtonHandler());
                 secondPanel.add(button);
+
+                return secondPanel;
+            } else {
+                getContentPane().removeAll();
+
+                for (Client client : clients) {
+                    JLabel label = new JLabel(client.getName());
+                    panel.add(label);
+                }
+
+                JButton button = new JButton("Ajouter client");
+                button.addActionListener(new ButtonHandler());
+
+                JButton button2 = new JButton("Retour menu");
+                button2.addActionListener(new ButtonHandler());
+
+                panel.add(button);
+                panel.add(button2);
+
+                secondPanel.add(new JScrollPane(panel));
+
+                add(secondPanel);
+
+                validate();
+                repaint();
+                return null;
             }
-            return secondPanel;
         } else {
             return null;
         }
@@ -391,7 +394,7 @@ public class HotelView extends JFrame implements IHotelView {
     /**
      * Afficher le formulaire pour l'ajout d'un client
      */
-    public JPanel afficherFormulaireClient(boolean mode) {
+    public JPanel afficherFormulaireClient(boolean mode, boolean buttonMode) {
         if (mode) {
             JPanel panel = new JPanel();
             panel.setLayout(new GridLayout(6, 2));
@@ -402,7 +405,7 @@ public class HotelView extends JFrame implements IHotelView {
             JLabel telephoneLabel = new JLabel("Téléphone : ");
             JLabel cbLabel = new JLabel("CB : ");
 
-            JButton button = new JButton("Nouveau client");
+            JButton button = new JButton((buttonMode) ? "Nouveau client" : "Nouveau");
             button.addActionListener(new ButtonHandler());
 
             panel.add(nomLabel);
@@ -419,7 +422,13 @@ public class HotelView extends JFrame implements IHotelView {
 
             return panel;
         } else {
-            return new JPanel();
+            getContentPane().removeAll();
+
+            add(this.afficherFormulaireClient(true, false));
+
+            validate();
+            repaint();
+            return null;
         }
     }
 
@@ -428,7 +437,11 @@ public class HotelView extends JFrame implements IHotelView {
      */
     public void recupererFormulaireClient(boolean mode) {
         if (this.hotelController.ajouterClient(mode, this.nomField.getText(), this.prenomField.getText(), this.cinField.getText(), this.telephoneField.getText(), this.cbField.getText())) {
-            this.afficherRecapitulatif();
+            if (mode) {
+                this.afficherRecapitulatif();
+            } else {
+                this.afficherClients(false);
+            }
         }
     }
 
@@ -453,11 +466,16 @@ public class HotelView extends JFrame implements IHotelView {
         ArrayList<Chambre> chambres = this.hotelController.recupererChambres();
         if (chambres != null) {
             getContentPane().removeAll();
-            JPanel panel = new JPanel(new GridLayout(0, 1));
+            JPanel panel = new JPanel(new GridLayout(16, 1));
             for (Chambre chambre : chambres) {
                 JLabel label = new JLabel(chambre.getName());
                 panel.add(label);
             }
+            JButton button2 = new JButton("Retour menu");
+            button2.addActionListener(new ButtonHandler());
+            button2.setSize(40, 40);
+
+            panel.add(button2);
             add(panel);
 
             validate();
@@ -503,6 +521,11 @@ public class HotelView extends JFrame implements IHotelView {
                 case "Retour menu":
                     afficherMenu();
                     break;
+                case "Ajouter client":
+                    afficherFormulaireClient(false, false);
+                    break;
+                case "Nouveau":
+                    recupererFormulaireClient(false);
             }
         }
     }

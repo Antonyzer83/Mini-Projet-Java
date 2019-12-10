@@ -15,11 +15,6 @@ public interface IHotelView {
     public void afficherReservations();
 
     /**
-     * Afficher une reservation specifique
-     */
-    public void afficherReservation();
-
-    /**
      * Afficher la totalite des chambre dispos pour une periode donnee
      */
     public void afficherChambresDispos();
@@ -45,24 +40,9 @@ public interface IHotelView {
     public void demanderClient();
 
     /**
-     * Demander la validation de l'annulation
-     */
-    public void checkAnnulerReservation(int id);
-
-    /**
      * Annuler une reservation
      */
-    public void annulerReservation();
-
-    /**
-     * Recuperer les dates entrees
-     */
-    public void recupererDates();
-
-    /**
-     * Recuperer les chambres selectionnees pour une reservation
-     */
-    public void recupererChambresSelectionnees();
+    public void annulerReservation(int id);
 
     /**
      * Valider une reservation
@@ -82,7 +62,7 @@ public interface IHotelView {
     /**
      * Afficher le formulaire pour l'ajout d'un client
      */
-    public JPanel afficherFormulaireClient(boolean mode);
+    public JPanel afficherFormulaireClient(boolean mode, boolean buttonMode);
 
     /**
      * Recuperer le formulaire pour l'ajout d'un client

@@ -117,7 +117,8 @@ public class HotelModel implements IHotelModel {
                     "JOIN reservation_chambre rc ON  rc.id_reservation = r.id_reservation " +
                     "WHERE r.id_reservation = ?;");
             stmt.setInt(1, id_reservation);
-            return stmt.execute();
+            stmt.execute();
+            return true;
         } catch (Exception e) {
             System.out.println(e);
             return false;
