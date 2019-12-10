@@ -41,6 +41,9 @@ public interface IHotelView {
 
     /**
      * Annuler une reservation
+     *
+     * @param id
+     *          Id de la reservation a annuler
      */
     public void annulerReservation(int id);
 
@@ -56,16 +59,31 @@ public interface IHotelView {
 
     /**
      * Afficher la totalite des clients
+     *
+     * @param mode
+     *          Mode reservation ou affichage unique
+     * @return
+     *          Panel comportant les clients
      */
     public JPanel afficherClients(boolean mode);
 
     /**
      * Afficher le formulaire pour l'ajout d'un client
+     *
+     * @param mode
+     *          Mode reservation ou affichage unique
+     * @param buttonMode
+     *          Mode du bouton
+     * @return
+     *          Panel comportant le formulaire
      */
     public JPanel afficherFormulaireClient(boolean mode, boolean buttonMode);
 
     /**
      * Recuperer le formulaire pour l'ajout d'un client
+     *
+     * @param mode
+     *          Reservation / Classique
      */
     public void recupererFormulaireClient(boolean mode);
 
